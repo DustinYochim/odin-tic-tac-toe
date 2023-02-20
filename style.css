@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap");
+
 *,
 *::after,
 *::before {
@@ -9,9 +11,37 @@
   --mark-size: calc(var(--cell-size) * 0.9);
 }
 
+body {
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  font-family: "Fredericka the Great", cursive;
+}
+
+header h1 {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.site-title {
+  background-image: linear-gradient(to right, red, blue, red, blue, red, blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* font-family: "Fredericka the Great", cursive; */
+  font-size: 5rem;
+}
+
+main {
+  flex: 1;
+  display: grid;
+}
+
 .board {
   min-width: 100vw;
-  min-height: 100vh;
+  min-height: 100%;
   display: grid;
   justify-content: center;
   align-content: center;
@@ -115,4 +145,47 @@
   width: calc(var(--mark-size) * 0.7);
   height: calc(var(--mark-size) * 0.7);
   background-color: white;
+}
+
+.winning-message {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: white;
+  font-size: 5rem;
+}
+
+.winning-message button {
+  font-size: 3rem;
+  background-color: white;
+  border: 1px solid black;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+}
+
+.winning-message button:hover {
+  background-color: black;
+  color: white;
+  border-color: white;
+}
+
+.winning-message.show {
+  display: flex;
+}
+
+footer {
+  margin-top: auto;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  /* font-family: "Fredericka the Great", cursive; */
 }
