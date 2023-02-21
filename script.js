@@ -7,7 +7,13 @@ const GameBoard = (() => {
     gameBoard[index] = currentClass;
   };
 
-  return { getGameBoard, updateBoard };
+  const resetBoard = () => {
+    for (let i = 0; i < gameBoard.length; i++) {
+      gameBoard[i] = "";
+    }
+  };
+
+  return { getGameBoard, updateBoard, resetBoard };
 })();
 
 const GameController = (() => {
@@ -37,6 +43,10 @@ const GameController = (() => {
 
   const getTurn = () => activePlayer;
 
+  const reset = () => {
+    board.resetBoard();
+  };
+
   const switchTurn = () => {
     if (activePlayer === players[0]) {
       activePlayer = players[1];
@@ -52,7 +62,9 @@ const GameController = (() => {
   }
 
   function isDraw(gameboard) {
-    console.log("Do this you dummy");
+    // console.log(gameboard);
+    // console.log(typeof gameboard);
+    return [...gameboard].every((cell) => cell === "x" || cell === "circle");
   }
 
   const playRound = (index, currentClass) => {
@@ -65,7 +77,6 @@ const GameController = (() => {
     }
     // check for draw
     if (isDraw(gameboard)) {
-      console.log("draw");
       return "draw";
     }
 
@@ -75,6 +86,7 @@ const GameController = (() => {
   return {
     getTurn,
     playRound,
+    reset,
   };
 })();
 
@@ -86,6 +98,7 @@ const DisplayController = (() => {
   const winningMessageTextElement = document.querySelector(
     ".data-winning-message-text"
   );
+  const restartButton = document.getElementById("restartButton");
 
   const placeMarker = (cell, currentClass) => {
     cell.classList.add(currentClass);
@@ -127,10 +140,16 @@ const DisplayController = (() => {
 
   const startGame = () => {
     cellElements.forEach((cell) => {
+      game.reset();
+      cell.classList.remove("x");
+      cell.classList.remove("circle");
       cell.addEventListener("click", handleClick, { once: true });
     });
     setBoardHoverClass("x");
+    winningMessageElement.classList.remove("show");
   };
+
+  restartButton.addEventListener("click", startGame);
 
   startGame();
 })();
