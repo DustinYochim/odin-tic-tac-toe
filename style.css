@@ -9,6 +9,7 @@
 :root {
   --cell-size: 100px;
   --mark-size: calc(var(--cell-size) * 0.9);
+  --text-color: var();
 }
 
 body {
@@ -154,14 +155,14 @@ main {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
 
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   color: white;
-  font-size: 5rem;
+  font-size: 8rem;
 }
 
 .winning-message button {
@@ -170,6 +171,8 @@ main {
   border: 1px solid black;
   padding: 0.25em 0.5em;
   cursor: pointer;
+
+  margin-top: 2rem;
 }
 
 .winning-message button:hover {
@@ -188,4 +191,12 @@ footer {
   text-align: center;
   font-size: 1.2rem;
   /* font-family: "Fredericka the Great", cursive; */
+}
+
+footer a {
+  text-decoration: none;
+  color: black;
+}
+footer a img {
+  height: 1em;
 }

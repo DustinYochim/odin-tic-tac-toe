@@ -1,4 +1,4 @@
-const GameBoard = (function () {
+const GameBoard = (() => {
   const gameBoard = ["", "", "", "", "", "", "", "", ""];
 
   const getGameBoard = () => gameBoard;
@@ -10,8 +10,18 @@ const GameBoard = (function () {
   return { getGameBoard, updateBoard };
 })();
 
-const GameController = (function () {
+const GameController = (() => {
   const board = GameBoard;
+  const WINNING_COMBINATIONS = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
   const players = [
     {
       name: "Player X",
@@ -35,11 +45,30 @@ const GameController = (function () {
     }
   };
 
+  function checkWin(gameboard, currentClass) {
+    return WINNING_COMBINATIONS.some((combination) =>
+      combination.every((index) => gameboard[index] === currentClass)
+    );
+  }
+
+  function isDraw(gameboard) {
+    console.log("Do this you dummy");
+  }
+
   const playRound = (index, currentClass) => {
+    const gameboard = board.getGameBoard();
     // update board
     board.updateBoard(index, currentClass);
     // check for win
+    if (checkWin(gameboard, currentClass)) {
+      return "win";
+    }
     // check for draw
+    if (isDraw(gameboard)) {
+      console.log("draw");
+      return "draw";
+    }
+
     // switch turns
     switchTurn();
   };
@@ -49,25 +78,59 @@ const GameController = (function () {
   };
 })();
 
-const DisplayController = (function () {
+const DisplayController = (() => {
   const game = GameController;
+  const board = document.getElementById("board");
   const cellElements = document.querySelectorAll("[data-cell]");
+  const winningMessageElement = document.getElementById("winningMessage");
+  const winningMessageTextElement = document.querySelector(
+    ".data-winning-message-text"
+  );
 
   const placeMarker = (cell, currentClass) => {
     cell.classList.add(currentClass);
   };
 
+  const setBoardHoverClass = (currentClass) => {
+    board.classList.remove("x");
+    board.classList.remove("circle");
+    board.classList.add(currentClass);
+  };
+
+  const endGame = (draw) => {
+    if (draw) {
+      // do something
+      winningMessageElement.classList.add("show");
+      winningMessageTextElement.textContent = "Draw!";
+    } else {
+      winningMessageElement.classList.add("show");
+      winningMessageTextElement.textContent = `${game.getTurn().class} wins!`;
+    }
+  };
   const handleClick = (e) => {
     // placeMark
     const cell = e.target;
-    const currentClass = game.getTurn().class;
+    let currentClass = game.getTurn().class;
     const { index } = cell.dataset;
     placeMarker(cell, currentClass);
     // play round
-    game.playRound(index, currentClass);
+    const results = game.playRound(index, currentClass);
+    if (results === "win") {
+      endGame(false);
+    } else if (results === "draw") {
+      endGame(true);
+    } else {
+      currentClass = game.getTurn().class;
+      setBoardHoverClass(currentClass);
+    }
   };
 
-  cellElements.forEach((cell) => {
-    cell.addEventListener("click", handleClick, { once: true });
-  });
+  const startGame = () => {
+    cellElements.forEach((cell) => {
+      cell.addEventListener("click", handleClick, { once: true });
+    });
+    setBoardHoverClass("x");
+  };
+
+  startGame();
 })();
