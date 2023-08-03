@@ -34,7 +34,3 @@ This project is a Tic Tac Toe game built with HTML, CSS, and JavaScript.
 ## Acknowledgements
 
 This project was inspired by The Odin Project.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
